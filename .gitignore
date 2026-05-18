@@ -1,0 +1,23 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+
+# Builds de backend (TypeScript → JS)
+dist/
+
+# Build de frontend (Next.js)
+.next/
+out/
+
+# Cliente Prisma generado (se regenera con `prisma generate`)
+services/*/generated/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
