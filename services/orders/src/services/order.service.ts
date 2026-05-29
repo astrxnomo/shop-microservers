@@ -1,9 +1,7 @@
 import { prisma } from "../lib/prisma";
 import { AppError } from "../lib/AppError";
 import * as catalogClient from "../clients/catalog.client";
-import * as decrementStock from "../clients/decrementStock";
 import * as cartClient from "../clients/cart.client";
-import * as fetchCart from "../clients/fetchCart";
 
 export async function listOrders(userId: string) {
     return prisma.order.findMany({
@@ -23,11 +21,11 @@ export async function getOrder(id: string, userId: string) {
 }
 
 export async function checkout(userId: string, token: string) {
-    const cart = await fetchCart.fetchCart(token);
+    const cart = await cartClient.fetchCart(token);
     if (!cart.items.length) throw new AppError("Cart is empty", 400);
 
     for (const item of cart.items) {
-        await decrementStock.decrementStock(item.productId, item.quantity);
+        await catalogClient.decrementStock(item.productId, item.quantity);
     }
 
     const order = await prisma.order.create({
